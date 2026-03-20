@@ -1,0 +1,31 @@
+# Node.js
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+.env
+backend/.env
+frontend/.env
+
+# Docker Data (Volumes)
+mysql-data/
+mongo-data/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini

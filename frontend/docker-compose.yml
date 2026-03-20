@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: campus_ai_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "Silchar@123"
+      MYSQL_DATABASE: campus_ai
+    ports:
+      - "3309:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ../Campus-AI Backend/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    networks:
+      - campus_ai_network
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:latest
+    container_name: campus_ai_mongodb
+    restart: always
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - campus_ai_network
+
+  # Backend Service
+  backend:
+    build:
+      context: ../Campus-AI Backend
+      dockerfile: Dockerfile
+    container_name: campus_ai_backend
+    restart: always
+    # Loads environment variables from a file for the Python app
+    env_file:
+      - .env.docker
+    ports:
+      - "8001:8000"
+    depends_on:
+      - mysql
+      - mongodb
+    networks:
+      - campus_ai_network
+
+  # Frontend Service
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Pass the VITE_API_URL to the build stage
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:8001}
+    container_name: campus_ai_frontend
+    restart: always
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend
+    networks:
+      - campus_ai_network
+
+volumes:
+  mysql_data:
+  mongodb_data:
+
+networks:
+  campus_ai_network:
+    driver: bridge

@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: campus-ai-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Silchar@123
+      MYSQL_DATABASE: campus_ai
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./backend/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+      - ./backend/seed.sql:/docker-entrypoint-initdb.d/seed.sql
+
+  mongodb:
+    image: mongo:latest
+    container_name: campus-ai-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: campus-ai-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - mysql
+      - mongodb
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_URL=http://localhost:8000
+    container_name: campus-ai-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  mysql-data:
+  mongo-data:

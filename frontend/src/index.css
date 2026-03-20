@@ -1,0 +1,229 @@
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-size: 14px;
+    background-color: transparent;
+  }
+
+  body {
+    @apply font-sans antialiased transition-colors duration-300;
+    @apply bg-transparent text-secondary;
+    font-size: 0.95rem;
+    min-height: 100vh;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+
+  /* Glass Cards */
+  .glass-card {
+    @apply backdrop-blur-xl border transition-colors;
+    @apply bg-white/5 border-white/10;
+    @apply shadow-glass-dark;
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300;
+    @apply hover:bg-white/10 hover:shadow-glow hover:-translate-y-1;
+  }
+
+  /* Animated Mesh Background - Reimagined for Black & Green */
+  .bg-gradient-mesh {
+    background:
+      radial-gradient(at 0% 0%, hsla(70, 100%, 47%, 0.15) 0, transparent 50%),
+      radial-gradient(at 100% 0%, hsla(0, 0%, 100%, 0.05) 0, transparent 50%),
+      radial-gradient(at 50% 50%, hsla(70, 100%, 47%, 0.05) 0, transparent 50%),
+      radial-gradient(at 0% 100%, hsla(0, 0%, 100%, 0.05) 0, transparent 50%),
+      radial-gradient(at 100% 100%, hsla(70, 100%, 47%, 0.15) 0, transparent 50%);
+    background-size: 200% 200%;
+    animation: meshGradient 20s ease infinite;
+    @apply fixed inset-0 -z-10 pointer-events-none;
+  }
+
+  @keyframes meshGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+
+    50% {
+      background-position: 100% 50%;
+    }
+
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(20deg); }
+    50% { transform: rotate(-10deg); }
+    75% { transform: rotate(15deg); }
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent via-white to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient;
+  }
+
+  .gradient-text-alt {
+    @apply bg-gradient-to-r from-white via-accent/80 to-white bg-clip-text text-transparent;
+  }
+
+  /* Button styles */
+  .btn-primary {
+    @apply px-6 py-3 rounded-2xl font-bold transition-all duration-300;
+    @apply bg-accent text-dominant;
+    @apply hover:bg-[#c9ff00] hover:shadow-glow hover:-translate-y-0.5;
+    @apply active:translate-y-0;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 rounded-2xl font-semibold transition-all duration-300;
+    @apply border border-white/20 text-white bg-white/5;
+    @apply hover:bg-white/10 hover:border-white/40 hover:-translate-y-0.5;
+  }
+
+  .btn-ghost {
+    @apply px-4 py-2 rounded-xl font-medium transition-all duration-200;
+    @apply text-white/70 hover:text-accent hover:bg-accent/10;
+  }
+
+  /* Input styles */
+  .input-glass {
+    @apply w-full px-4 py-3 rounded-xl text-sm font-medium;
+    @apply bg-white/5 border border-white/10 placeholder-white/30;
+    @apply text-white outline-none ring-2 ring-transparent;
+    @apply focus:ring-accent/30 focus:border-accent/50;
+    @apply transition-all duration-200;
+  }
+
+  /* Sidebar styles */
+  .sidebar-link {
+    @apply flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300;
+    @apply text-white/50 font-black uppercase tracking-[0.15em] text-[11px];
+    @apply hover:bg-accent/10 hover:text-accent hover:pl-6;
+  }
+
+  .sidebar-link.active {
+    @apply bg-accent text-dominant shadow-glow border-none;
+    @apply hover:text-dominant hover:bg-accent;
+  }
+
+  .sidebar-link.active svg {
+    @apply text-dominant;
+  }
+
+  /* Progress bars */
+  .progress-bar {
+    @apply h-2 rounded-full overflow-hidden bg-white/10;
+  }
+
+  .progress-fill {
+    @apply h-full bg-accent transition-all duration-500;
+  }
+
+  /* Chat bubbles */
+  .chat-bubble-user {
+    @apply ml-auto max-w-xs lg:max-w-md px-4 py-3 rounded-2xl rounded-tr-sm;
+    @apply bg-accent text-dominant font-medium;
+  }
+
+  .chat-bubble-bot {
+    @apply mr-auto max-w-xs lg:max-w-md px-4 py-3 rounded-2xl rounded-tl-sm;
+    @apply bg-white/10 border border-white/10 text-white;
+  }
+
+  /* Animated gradient border */
+  .gradient-border {
+    @apply relative;
+  }
+
+  .gradient-border::before {
+    content: '';
+    @apply absolute inset-0 rounded-2xl;
+    background: linear-gradient(135deg, #BCF000, #F5F5F5, #BCF000);
+    background-size: 200% 200%;
+    animation: gradientShift 4s ease infinite;
+    z-index: -1;
+    padding: 1px;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-white/20;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-accent/50;
+}
+
+/* Page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 400ms ease;
+}
+
+.page-exit {
+  opacity: 1;
+}
+
+.page-exit-active {
+  opacity: 0;
+  transition: all 200ms ease;
+}

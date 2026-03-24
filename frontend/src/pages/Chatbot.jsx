@@ -121,6 +121,9 @@ export default function Chatbot() {
     const bottomRef = useRef(null);
 
     useEffect(() => {
+        // Reset messages immediately when user changes to ensure privacy
+        setMessages([{ id: 'welcome', role: 'bot', text: t('chatbot.welcome'), time: 'AI READY' }]);
+
         async function fetchHistory() {
             try {
                 const { apiFetch, ENDPOINTS } = await import('../api');
@@ -138,8 +141,11 @@ export default function Chatbot() {
                 console.error("Failed to fetch chat history:", err);
             }
         }
-        fetchHistory();
-    }, [t]);
+        
+        if (user) {
+            fetchHistory();
+        }
+    }, [user?.id, t]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });

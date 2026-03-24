@@ -11,7 +11,7 @@ router = APIRouter(prefix="/chat", tags=["Chatbot"])
 
 @router.get("/history")
 async def get_history(current_user: dict = Depends(auth_utils.get_current_user_data)):
-    user_id = str(current_user["id"])
+    user_id = f"{current_user['role']}_{current_user['id']}"
     history = await get_chat_history(user_id, limit=30)
     output = []
     
@@ -32,15 +32,15 @@ async def chat_with_ai(
     current_user: dict = Depends(auth_utils.get_current_user_data),
     db: Session = Depends(get_db)
 ):
-    user_id = str(current_user["id"])
+    user_id = f"{current_user['role']}_{current_user['id']}"
     role = current_user["role"] # 'student' or 'admin'
     user_message = request.message
 
     # Get user name for personalized long-term memory integration
     if role == "admin":
-        user_info = db.query(models.Admin).filter(models.Admin.id == int(user_id)).first()
+        user_info = db.query(models.Admin).filter(models.Admin.id == int(current_user["id"])).first()
     else:
-        user_info = db.query(models.Student).filter(models.Student.id == int(user_id)).first()
+        user_info = db.query(models.Student).filter(models.Student.id == int(current_user["id"])).first()
     
     user_name = user_info.name if user_info and hasattr(user_info, 'name') else "User"
 

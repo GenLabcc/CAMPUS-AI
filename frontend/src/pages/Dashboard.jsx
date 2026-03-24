@@ -97,7 +97,7 @@ export default function Dashboard() {
 
         try {
             // Using apiFetch which automatically includes the Bearer token
-            await apiFetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/leaves/apply`, {
+            await apiFetch(`${import.meta.env.VITE_API_URL}/leaves/apply`, {
                 method: 'POST',
                 body: JSON.stringify({
                     type: leaveType,

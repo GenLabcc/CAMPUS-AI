@@ -181,7 +181,7 @@ export default function Chatbot() {
             setMessages(prev => [...prev, {
                 id: Date.now() + 1,
                 role: 'bot',
-                text: "⚠️ Connection error. Please make sure the backend is running at http://localhost:8000",
+                text: "⚠️ Connection error. Please check your internet connection or backend status.",
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             }]);
         }

@@ -1,4 +1,6 @@
+// Production Version: 1.0.1
 export const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 
 export const ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/students/login`,
